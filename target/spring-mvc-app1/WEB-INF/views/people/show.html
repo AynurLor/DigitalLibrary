@@ -7,18 +7,21 @@
 <body>
 
 <a th:text="${person.getFullName() + ', ' + person.getBirthday()}">VALUE</a>
-<p th:if="${#lists.isEmpty(person.books)}">
+
+<div th:if="${not person.books.isEmpty()}">
     <hr/>
     <strong>Книги:</strong>
-</p>
 
-<p th:each="book : ${person.books}"
-   th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}"
-   th:if="${not #lists.isEmpty(person.books)}">
-</p>
+    <p th:each="book : ${person.books}"
+       th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}"
+       th:if="${not #lists.isEmpty(person.books)}">
+    </p>
+</div>
 
-<p th:if="${#lists.isEmpty(person.books)}"
->Человек пока не взял не одной книги</p>
+<div th:if="${person.books.isEmpty()}">
+    <p>Человек пока не взял не одной книги</p>
+</div>
+
 <hr/>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}">

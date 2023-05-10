@@ -1,19 +1,35 @@
 package ru.alishev.springcourse.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.sql.Date;
+import javax.validation.constraints.NotEmpty;
 
 public class Book {
     private int id;
+    @NotEmpty(message = "Title should not be empty")
     private String title;
+    @NotEmpty(message = "Author should not be empty")
     private String author;
-//    @DateTimeFormat
+    @NotEmpty(message = "Year should not be empty")
+    @DateTimeFormat(pattern = "\\w{4}-\\w{2}-\\w{2}$")
     private String year;
     private Integer person_id;
 
+    public Book() {
+    }
+
+    public Book(Integer id, String title, String author, String year, Integer person_id) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.person_id = person_id;
+    }
+
     public void setYear(String year) {
         this.year = year;
+    }
+    public String getYear() {
+        return year;
     }
 
     public Integer getId() {
@@ -28,15 +44,6 @@ public class Book {
         return title;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year=" + year +
-                '}';
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -50,12 +57,7 @@ public class Book {
         this.author = author;
     }
 
-    public String getYear() {
-        return year;
-    }
 
-    public Book() {
-    }
 
     public Integer getPerson_id() {
         return person_id;
@@ -64,12 +66,14 @@ public class Book {
     public void setPerson_id(int person_id) {
         this.person_id = person_id;
     }
-
-    public Book(Integer id, String title, String author, String year, Integer person_id) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.person_id = person_id;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                '}';
     }
+
 }

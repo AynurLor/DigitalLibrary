@@ -7,14 +7,14 @@
 <body>
 
 <a th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</a>
-<p th:if="${book}">
-</p>
+<p th:if="${book}"></p>
 
-<div th:if="${not people}">
-    <label for="delete">Освободить книгу:
-    <a th:text="${per}"></a></label>
-    <input type="submit" value="Освободить книгу" th:field="*{year}" id="delete"/>
+<div th:if="${owner}">
+    <span>Книга сейчас у: </span> <span th:text="${owner.getFullName()}">Person Name</span>
 
+    <form th:method="PATCH" th:action="@{/book/{id}/release(id=${book.getId()})}">
+        <input type="submit" value="Освободить книгу"/>
+    </form>
 </div>
 
 <div th:if="${people}">
@@ -30,8 +30,6 @@
 </div>
 <hr/>
 
-<!--<a th:href="@{/people/{id}(id=${person.getId()})}"-->
-<!--   th:text="${person.getFullName() + ', ' + person.getBirthday()}">People</a>-->
 <a th:href="@{/book/{id}/edit(id=${book.getId()})}">
     <button type="submit" value="Редактировать">Редактировать</button>
 </a>

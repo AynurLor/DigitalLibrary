@@ -40,9 +40,12 @@ public class BookController {
         Map<String, Object> object = new HashMap<>();
         object.put("book", dao.show(id));
 
-        Optional<Person> bookOwner =
-        if ()
-        object.put("people", personDAO.index());
+        Optional<Person> bookOwner = dao.getBookOwner(id);
+        if (bookOwner.isPresent()) {
+            object.put("owner", bookOwner.get());
+        } else {
+            object.put("people", personDAO.index());
+        }
         model.addAllAttributes(object);
 
         return "book/show";
@@ -52,7 +55,7 @@ public class BookController {
     public String newPerson(@ModelAttribute("book") Book book) {
         return "book/new";
     }
-//    //
+
     @PostMapping()
     public String create(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult) {
@@ -61,13 +64,13 @@ public class BookController {
         dao.save(book);
         return "redirect:/book";
     }
-//    //
+
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("book", dao.show(id));
         return "book/edit";
     }
-//    //
+
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
                          @PathVariable("id") int id) {
@@ -77,18 +80,18 @@ public class BookController {
         dao.update(id, book);
         return "redirect:/book";
     }
-//    //
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         dao.delete(id);
         return "redirect:/book";
     }
 
-//    @PathVariable("/{id}/release")
-//    public String release(@PathVariable("id") int id) {
-//        dao.release(id);
-//        return ("redirect:/book/" + id);
-//    }
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        dao.release(id);
+        return ("redirect:/book/" + id);
+    }
 
     @PatchMapping("/{id}/assign")
     public String assign(@PathVariable("id") int id,  @RequestParam("person.id") int selectedPerson) {

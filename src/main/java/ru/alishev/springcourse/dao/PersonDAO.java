@@ -35,7 +35,6 @@ public class PersonDAO {
         Person people = jdbcTemplate.query("select * from Person where id=?;",
                         new Object[]{id},  new BeanPropertyRowMapper<>(Person.class))
                 .stream().findAny().orElse(null);
-//        System.out.println(people);
         assert people != null;
         people.setId(getId(people));
         people.setBooks(getBooks(id));
@@ -45,7 +44,9 @@ public class PersonDAO {
     public List<Book> getBooks(int id) {
         return jdbcTemplate.query("select * from Book " +
                 "left join Person P on P.id = Book.person_id " +
-                "where person_id = ?;", new Object[]{id} ,new BeanPropertyRowMapper<>(Book.class));
+                "where person_id = ?;",
+                new Object[]{id} ,
+                new BeanPropertyRowMapper<>(Book.class));
     }
     public void save(Person people) {
         System.out.println(people);
