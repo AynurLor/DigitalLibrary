@@ -1,8 +1,5 @@
 # DigitalLibrary
 
-
-# DigitalLibrary
-
 DigitalLibrary - это веб-приложение, созданное с использованием Java, Spring MVC, HTML, PostgreSQL, Spring Validator, JDBC и SQL, которое позволяет зарегистрированным пользователям взять книгу и отметить ее возврат, а также создавать новых читателей и книг.
 
 ## Установка и настройка
