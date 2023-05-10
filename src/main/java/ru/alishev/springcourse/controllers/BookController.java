@@ -14,6 +14,7 @@ import ru.alishev.springcourse.models.Person;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequestMapping("/book")
@@ -35,11 +36,15 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         Map<String, Object> object = new HashMap<>();
-        object.put("people", personDAO.index());
         object.put("book", dao.show(id));
+
+        Optional<Person> bookOwner =
+        if ()
+        object.put("people", personDAO.index());
         model.addAllAttributes(object);
+
         return "book/show";
     }
 
@@ -77,5 +82,17 @@ public class BookController {
     public String delete(@PathVariable("id") int id) {
         dao.delete(id);
         return "redirect:/book";
+    }
+
+//    @PathVariable("/{id}/release")
+//    public String release(@PathVariable("id") int id) {
+//        dao.release(id);
+//        return ("redirect:/book/" + id);
+//    }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id,  @RequestParam("person.id") int selectedPerson) {
+        dao.assign(id, selectedPerson);
+        return ("redirect:/book/" + id);
     }
 }

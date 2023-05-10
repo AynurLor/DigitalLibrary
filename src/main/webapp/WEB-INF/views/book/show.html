@@ -10,37 +10,28 @@
 <p th:if="${book}">
 </p>
 
-<!--<p th:if="${#lists.isEmpty(person.books)}"-->
-<!--&gt;Эта книга свободна. Кому назначить ее?-->
-<!--Выберите человека</p>-->
-<!--<hr/>-->
+<div th:if="${not people}">
+    <label for="delete">Освободить книгу:
+    <a th:text="${per}"></a></label>
+    <input type="submit" value="Освободить книгу" th:field="*{year}" id="delete"/>
 
-<!--<label th:each="person : ${people}">Выберите человека-->
-<!--    <select id="human" name="human">-->
-<!--        <option th:text="${person.getFullName() + ', ' + person.getBirthDay()}">People</option>-->
-<!--        <option value="@{person.getFullName()}">dsd</option>-->
-<!--    </select>-->
-<!--    <button type="submit">Отправить</button>-->
-<!--</label>-->
+</div>
 
-<!--<div th:each="person : ${people}">-->
-<!--    <a th:href="@{/people/{id}(id=${person.getId()})}"-->
-<!--       th:text="${person.getFullName() + ', ' + person.getBirthday()}">People</a>-->
-<!--</div>-->
-
-<dif th:if="${people}">
+<div th:if="${people}">
     <span>Эта книга свободна. Кому назначить ее?</span>
     <form th:method="PATCH" th:action="@{/book/{id}/assign(id=${book.getId()})}">
         <label for="person">Выберите человека</label>
-        <select th:object="${person}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
+        <select th:object="${book}" id="person" name="person.id">
+            <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.fullName}">
             </option>
         </select>
-        <input type="submit" value="Назначить книгу">
+        <input type="submit" value="Назначить книгу"/>
     </form>
-</dif>
+</div>
 <hr/>
 
+<!--<a th:href="@{/people/{id}(id=${person.getId()})}"-->
+<!--   th:text="${person.getFullName() + ', ' + person.getBirthday()}">People</a>-->
 <a th:href="@{/book/{id}/edit(id=${book.getId()})}">
     <button type="submit" value="Редактировать">Редактировать</button>
 </a>

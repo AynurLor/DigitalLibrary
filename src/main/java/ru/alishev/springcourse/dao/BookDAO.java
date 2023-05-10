@@ -9,10 +9,11 @@ import ru.alishev.springcourse.models.Person;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class BookDAO {
-    private static JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public BookDAO(JdbcTemplate jdbcTemplate) {
@@ -20,44 +21,47 @@ public class BookDAO {
     }
 
     public List<Book> index() {
-        return jdbcTemplate.query("select * from Book",
+        System.out.println("index");
+//        System.out.println(jdbcTemplate.queryForList("select * from Book;",
+//                List.class));
+        return jdbcTemplate.query("select id, title, author, year, coalesce(person_id, 0) from Book;",
                 new BeanPropertyRowMapper<>(Book.class));
     }
-//    title varchar not null,
-//    author varchar not null,
-//    year
+
 public int getId(Book book) {
-    int id = jdbcTemplate.queryForObject("select id from Book where title=? and author=? and year=?",
-            Integer.class, book.getTitle(), book.getAuthor(), Date.valueOf(book.getYear()));
+    int id = jdbcTemplate.queryForObject("select id from Book where title=?;",
+            Integer.class, book.getTitle());
     return id;
 }
     //    //
     public Book show(int id) {
-        Book book = jdbcTemplate.query("select * from Book where id=?",
+        Book book = jdbcTemplate.query("select id, title, author, year, coalesce(person_id, 0) from Book where id=?;",
                         new Object[]{id},  new BeanPropertyRowMapper<>(Book.class))
                 .stream().findAny().orElse(null);
         book.setId(getId(book));
         return book;
     }
-    //
-//    public List<Book> getBooks(int id) {
-//        return jdbcTemplate.query("select * from Book " +
-//                "left join Book P on P.id = Book.person_id " +
-//                "where person_id = ?", new Object[]{id} ,new BeanPropertyRowMapper<>(Book.class));
-//    }
     public void save(Book book) {
         jdbcTemplate.update("insert into Book(title, author, year) values (?, ?, ?);",
                 book.getTitle(),
                 book.getAuthor(),
-                book.getYear());
+                Date.valueOf(book.getYear()));
     }
     public void update(int id, Book updateBook) {
-        System.out.println(updateBook);
         jdbcTemplate.update("update Book set title=?, author=?, year=? where id=?;",
                 updateBook.getTitle(), updateBook.getAuthor(), Date.valueOf(updateBook.getYear()), id);
     }
     public void delete(int id) {
-        jdbcTemplate.update("delete from Book where id=?", id);
+        jdbcTemplate.update("delete from Book where id=?;", id);
     }
 
+    public void assign(int id, int selectedPerson) {
+//        System.out.println(id +"| " + selectedPerson.getId());
+        jdbcTemplate.update("update Book set person_id=? where id=?", selectedPerson, id);
+    }
+
+//    public Optional
+    public void release(int id) {
+        jdbcTemplate.update("update Book set person_id=null where id=?;", id);
+    }
 }

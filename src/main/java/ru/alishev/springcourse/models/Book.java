@@ -8,19 +8,19 @@ public class Book {
     private int id;
     private String title;
     private String author;
-    @DateTimeFormat
-    private Date year;
-    private int person_id;
+//    @DateTimeFormat
+    private String year;
+    private Integer person_id;
 
-    public void setYear(Date year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,17 +51,13 @@ public class Book {
     }
 
     public String getYear() {
-        return year.toString();
-    }
-
-    public void setYear(String year) {
-        this.year = Date.valueOf(year);
+        return year;
     }
 
     public Book() {
     }
 
-    public int getPerson_id() {
+    public Integer getPerson_id() {
         return person_id;
     }
 
@@ -69,11 +65,11 @@ public class Book {
         this.person_id = person_id;
     }
 
-    public Book(int id, String title, String author, String year, int person_id) {
+    public Book(Integer id, String title, String author, String year, Integer person_id) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.year = Date.valueOf(year);
+        this.year = year;
         this.person_id = person_id;
     }
 }
